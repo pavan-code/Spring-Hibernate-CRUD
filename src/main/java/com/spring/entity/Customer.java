@@ -1,9 +1,15 @@
 package com.spring.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -15,19 +21,9 @@ public class Customer {
 	private String firstName;
 	private String lastName;
 	private String email;
-	@OneToOne
-	private Mobile mobile;
-	public Customer() {	
-	}
-	
-	public Customer(int id, String firstName, String lastName, String email, Mobile mobile) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.mobile = mobile;
-	}
+	@OneToMany( targetEntity = Mobile.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "customer_id", referencedColumnName = "id")
+	private List<Mobile> mobiles = new ArrayList<>();
 
 	public int getId() {
 		return id;
@@ -54,16 +50,16 @@ public class Customer {
 		this.email = email;
 	}
 	
-	public Mobile getMobile() {
-		return mobile;
+	public List<Mobile> getMobiles() {
+		return mobiles;
 	}
-	public void setMobile(Mobile mobile) {
-		this.mobile = mobile;
+	public void setMobiles(List<Mobile> mobiles) {
+		this.mobiles = mobiles;
 	}
 	@Override
 	public String toString() {
 		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", mobiles=" + mobile + "]";
+				+ ", mobiles=" + mobiles + "]";
 	}
 	
 	

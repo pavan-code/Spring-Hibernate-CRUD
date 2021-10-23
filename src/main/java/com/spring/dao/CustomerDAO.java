@@ -14,7 +14,7 @@ import com.spring.entity.Mobile;
 import com.spring.util.HibernateUtil;
 
 @Repository
-public class CustomerDAO {
+public class CustomerDAO implements DAOInterface {
 
 	public List<Customer> findAll(Class<Customer> type, Session session) {
 		CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -24,11 +24,10 @@ public class CustomerDAO {
 		return data;
 	}
 
-	public Customer save(Customer customer, Mobile mobile) {
+	public Customer save(Customer customer, List<Mobile> mobiles) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
 		session.save(customer);
-		session.save(mobile);
 		t.commit();
 		session.close();
 		return customer;
@@ -49,7 +48,6 @@ public class CustomerDAO {
 		if (customer == null) {
 			return "Customer not found";
 		} else {
-			session.delete(session.find(Mobile.class, customer.getMobile().getId()));
 			session.delete(customer);
 			t.commit();
 			session.close();
@@ -63,15 +61,12 @@ public class CustomerDAO {
 		Customer existing = session.find(Customer.class, id);
 		if(existing == null) {
 			return new Customer();
-		} else {
-			Mobile m = session.get(Mobile.class, existing.getMobile().getId());
+		} else {			
 			existing.setEmail(customer.getEmail());
 			existing.setFirstName(customer.getFirstName());
 			existing.setLastName(customer.getLastName());
-			existing.setMobile(customer.getMobile());
-			m.setMobile(customer.getMobile().getMobile());
-			m.setBand(customer.getMobile().getBand());
-			m.setOperator(customer.getMobile().getOperator());
+			existing.setMobiles(customer.getMobiles());
+			session.save(existing);
 			t.commit();
 			session.close();
 			return existing;

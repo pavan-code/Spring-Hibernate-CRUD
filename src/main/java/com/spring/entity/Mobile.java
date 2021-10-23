@@ -1,31 +1,24 @@
 package com.spring.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Mobile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	private String mobile;
 	private String operator;
 	private String band;
-	
-	public Mobile() {
-	}
-	
-	public Mobile(int id, String mobile, String operator, String band) {
-		super();
-		this.id = id;
-		this.mobile = mobile;
-		this.operator = operator;
-		this.band = band;
-	
-	}
+
 	public int getId() {
 		return id;
 	}
@@ -53,8 +46,7 @@ public class Mobile {
 	
 	@Override
 	public String toString() {
-		return "Mobile [id=" + id + ", mobile=" + mobile + ", operator=" + operator + ", band=" + band + ", customer="
-				+ "]";
+		return "Mobile [id=" + id + ", mobile=" + mobile + ", operator=" + operator + ", band=" + band + "]";
 	}
 	
 	
